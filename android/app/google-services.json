@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "222456714485",
+    "project_id": "jhotodex",
+    "storage_bucket": "jhotodex.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222456714485:android:5ab1ec1bb14939479961bc",
+        "android_client_info": {
+          "package_name": "com.example.pokedex"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222456714485-0klie91am8tkpq2auen2u1jp2pd4dujr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pokedex",
+            "certificate_hash": "1774906378edab40a749fe68aad15e79493477ec"
+          }
+        },
+        {
+          "client_id": "222456714485-k5lmofcfua3bqlm8jum0stc86luomu2q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqOp5IB_mL5Fs3ISPO6mjs3-Rxv_FbVNA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222456714485-k5lmofcfua3bqlm8jum0stc86luomu2q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
