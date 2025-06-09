@@ -3,7 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pokedex/providers/user_provider.dart';
 import 'package:pokedex/screens/home_screen.dart';
+import 'package:pokedex/services/setup_service.dart';
+import 'package:provider/provider.dart';
 
 class SetupScreen extends StatefulWidget {
   const SetupScreen({super.key});
@@ -13,7 +16,7 @@ class SetupScreen extends StatefulWidget {
 }
 
 class _SetupScreenState extends State<SetupScreen> {
-  final _usernameController = TextEditingController();
+  // final _usernameController = TextEditingController();
   String? _selectedType;
   String? _backgroundImage;
 
@@ -25,31 +28,14 @@ class _SetupScreenState extends State<SetupScreen> {
     'Grass': ['Chikorita', 'Hoppip', 'Bellsprout'],
   };
 
-  void handleContinue() async {
-    if (_selectedType == null || _usernameController.text.trim().isEmpty)
-      return;
-
-    final username = _usernameController.text.trim();
-    final selectedList = starterPool[_selectedType]!;
-    final assignedPokemon = selectedList[Random().nextInt(selectedList.length)];
-
-    final imagePath = "assets/images/${assignedPokemon.toLowerCase()}.png";
-
-    final uid = user?.uid;
-
-    if (uid != null) {
-      await FirebaseFirestore.instance.collection('users').doc(uid).set({
-        'username': username,
-        'starterPokemon': assignedPokemon,
-        'pokemonImage': imagePath,
-        'email': user!.email,
-      });
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const HomeScreen()),
-      );
-    }
+  void handleContinue() {
+    final username = context.read<UserProvider>().username;
+    SetupService.handleContinueLogic(
+      context: context,
+      selectedType: _selectedType,
+      backgroundImage: _backgroundImage ?? '',
+      username: username,
+    );
   }
 
   @override
@@ -59,7 +45,6 @@ class _SetupScreenState extends State<SetupScreen> {
       resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
-          // ⬇️ Background image (optional with opacity)
           _backgroundImage != null
               ? Opacity(
                 opacity: 0.85,
@@ -103,29 +88,32 @@ class _SetupScreenState extends State<SetupScreen> {
                   const SizedBox(height: 44),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: TextField(
-                      controller: _usernameController,
-                      style: GoogleFonts.vt323(fontSize: 20),
-                      decoration: InputDecoration(
-                        hintText: 'What should we call you?',
-                        hintStyle: GoogleFonts.vt323(fontSize: 20),
-                        filled: true,
-                        fillColor: Colors.white,
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            width: 2,
-                            color: Colors.black,
+                    child: Consumer<UserProvider>(
+                      builder:
+                          (_, userProvider, __) => TextField(
+                            onChanged: (val) => userProvider.setUsername(val),
+                            style: GoogleFonts.vt323(fontSize: 20),
+                            decoration: InputDecoration(
+                              hintText: 'What should we call you?',
+                              hintStyle: GoogleFonts.vt323(fontSize: 20),
+                              filled: true,
+                              fillColor: Colors.white,
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  width: 2,
+                                  color: Colors.black,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  width: 2.5,
+                                  color: Colors.amberAccent,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
                           ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            width: 2.5,
-                            color: Colors.amberAccent,
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
                     ),
                   ),
                   const SizedBox(height: 35),
