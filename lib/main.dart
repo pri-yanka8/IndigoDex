@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:pokedex/auth/authgate.dart';
 import 'package:pokedex/providers/user_provider.dart';
+import 'package:pokedex/screens/home_screen.dart';
+import 'package:pokedex/screens/splash_screen.dart';
+import 'package:pokedex/screens/welcome_screen.dart';
 import 'package:provider/provider.dart';
 // import 'package:pokedex/screens/splash_screen.dart';
 
@@ -22,9 +25,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      initialRoute: '/',
+      routes: {
+        // '/': (context) => const SplashScreen(),
+        '/welcome': (context) => const WelcomeScreen(),
+        '/home': (context) => const HomeScreen(),
+      },
       debugShowCheckedModeBanner: false,
       title: 'Johto Pokédex',
-      home: const AuthGate(),
+      home: const SplashScreen(),
     );
   }
 }

@@ -1,18 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pokedex/auth/auth_service.dart';
 import 'package:pokedex/screens/home_screen.dart';
 import 'package:pokedex/screens/setup_screen.dart';
+import 'package:pokedex/widgets/pokeball_loader.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
 
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  bool _isloading = false;
   Future<void> _handleGoogleSignIn(BuildContext context) async {
+    setState(() {
+      _isloading = true;
+    });
     final user = await AuthService().signInWithGoogle();
 
     if (user == null) {
+      setState(() {
+        _isloading = false;
+      });
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Google Sign-In failed')));
@@ -21,7 +34,6 @@ class WelcomeScreen extends StatelessWidget {
 
     final email = user.email;
 
-    // 🔍 Check if user already exists in Firestore
     final querySnapshot =
         await FirebaseFirestore.instance
             .collection('users')
@@ -29,14 +41,14 @@ class WelcomeScreen extends StatelessWidget {
             .limit(1)
             .get();
 
+    setState(() => _isloading = false);
+
     if (querySnapshot.docs.isNotEmpty) {
-      // ✅ User exists → Go to HomeScreen
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const HomeScreen()),
       );
     } else {
-      // 🆕 New user → Go to SetupScreen
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const SetupScreen()),
@@ -47,92 +59,91 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          decoration: const BoxDecoration(
-            gradient: RadialGradient(
-              colors: [
-                Color.fromARGB(255, 255, 252, 165),
-                Color.fromARGB(255, 255, 236, 61),
-              ],
-              center: Alignment.bottomCenter,
-              radius: 1.2,
+      body: Stack(
+        children: [
+          SafeArea(
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: RadialGradient(
+                  colors: [
+                    Color.fromARGB(255, 255, 252, 165),
+                    Color.fromARGB(255, 255, 236, 61),
+                  ],
+                  center: Alignment.bottomCenter,
+                  radius: 1.2,
+                ),
+              ),
+              child: Column(
+                children: [
+                  // ⬇️ your original UI
+                  ClipPath(
+                    clipper: CurvedBottomClipper(),
+                    child: Image.asset(
+                      'assets/images/welcome_screen.jpg',
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height * 0.55,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  Text(
+                    'JhotoDex',
+                    style: GoogleFonts.pressStart2p(
+                      fontSize: 20,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton(
+                        onPressed: () {},
+                        child: const Text(
+                          "Guest User",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text("or"),
+                  const SizedBox(height: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () => _handleGoogleSignIn(context),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        child: const Text(
+                          "Continue with Google",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-          child: Column(
-            children: [
-              ClipPath(
-                clipper: CurvedBottomClipper(),
-                child: Image.asset(
-                  'assets/images/welcome_screen.jpg',
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.55,
-                  fit: BoxFit.cover,
-                ),
+
+          // 🔥 LOADER OVERLAY
+          if (_isloading)
+            Container(
+              color: Colors.black.withOpacity(0.5), // dim background
+              child: const Center(
+                child: PokeballLoader(), // your spinning widget
               ),
-
-              const SizedBox(height: 30),
-
-              Text(
-                'JhotoDex',
-                style: GoogleFonts.pressStart2p(
-                  fontSize: 20,
-                  color: Colors.black,
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      side: const BorderSide(color: Colors.black, width: 1.5),
-                    ),
-                    onPressed: () {
-                      // TODO: Guest user flow
-                    },
-                    child: const Text(
-                      "Guest User",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 8),
-              const Text("or"),
-              const SizedBox(height: 8),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                    onPressed: () => _handleGoogleSignIn(context),
-                    child: const Text(
-                      "Continue with Google",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+            ),
+        ],
       ),
     );
   }

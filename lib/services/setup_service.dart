@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../providers/user_provider.dart';
+// import '../providers/user_provider.dart';
 
 class SetupService {
   static final Map<String, List<String>> starterPool = {
