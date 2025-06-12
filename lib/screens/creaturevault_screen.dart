@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:provider/provider.dart';
+import 'package:pokedex/providers/pokemon_provider.dart';
 
 class CreatureVaultScreen extends StatefulWidget {
   const CreatureVaultScreen({super.key});
@@ -11,46 +11,61 @@ class CreatureVaultScreen extends StatefulWidget {
 }
 
 class _CreatureVaultScreenState extends State<CreatureVaultScreen> {
-  List<Map<String, dynamic>> _pokemonList = [];
-  bool _isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    fetchKantoPokemon();
-  }
-
-  Future<void> fetchKantoPokemon() async {
-    final url = Uri.parse('https://pokeapi.co/api/v2/pokedex/2'); // Kanto
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      final entries = data['pokemon_entries'];
-
-      List<Map<String, dynamic>> loadedPokemon = [];
-
-      for (var entry in entries) {
-        final speciesUrl = entry['pokemon_species']['url'];
-        final id = entry['entry_number'];
-
-        final detailUrl = Uri.parse('https://pokeapi.co/api/v2/pokemon/$id');
-        final detailResponse = await http.get(detailUrl);
-        if (detailResponse.statusCode == 200) {
-          final detailData = jsonDecode(detailResponse.body);
-          final name = detailData['name'];
-          final type = detailData['types'][0]['type']['name'];
-          final image =
-              detailData['sprites']['other']['official-artwork']['front_default'];
-
-          loadedPokemon.add({'name': name, 'type': type, 'image': image});
-        }
-      }
-
-      setState(() {
-        _pokemonList = loadedPokemon;
-        _isLoading = false;
-      });
+  LinearGradient getTypeGradient(String type) {
+    switch (type.toLowerCase()) {
+      case 'fire':
+        return const LinearGradient(
+          colors: [Color(0xFFFFA07A), Color.fromARGB(255, 255, 219, 166)],
+        ); // salmon → peach
+      case 'water':
+        return const LinearGradient(
+          colors: [Color(0xFF81D4FA), Color.fromARGB(255, 212, 241, 255)],
+        ); // sky blue → pale blue
+      case 'grass':
+        return const LinearGradient(
+          colors: [Color(0xFFA5D6A7), Color.fromARGB(255, 222, 255, 225)],
+        ); // medium green → mint
+      case 'electric':
+        return const LinearGradient(
+          colors: [Color(0xFFFFF176), Color(0xFFFFF9C4)],
+        ); // yellow → lemon
+      case 'rock':
+        return const LinearGradient(
+          colors: [Color(0xFFD7CCC8), Color.fromARGB(255, 255, 241, 227)],
+        ); // light brown → stone
+      case 'psychic':
+        return const LinearGradient(
+          colors: [Color(0xFFF48FB1), Color.fromARGB(255, 255, 214, 228)],
+        ); // rose → blush
+      case 'poison':
+        return const LinearGradient(
+          colors: [Color(0xFFCE93D8), Color.fromARGB(255, 249, 213, 255)],
+        ); // lavender → pastel
+      case 'ground':
+        return const LinearGradient(
+          colors: [Color(0xFFBCAAA4), Color.fromARGB(255, 244, 205, 192)],
+        ); // warm tan → off-white
+      case 'ice':
+        return const LinearGradient(
+          colors: [Color(0xFFB3E5FC), Color.fromARGB(255, 205, 249, 255)],
+        ); // icy blue → frosty white
+      case 'bug':
+        return const LinearGradient(
+          colors: [Color(0xFFC5E1A5), Color.fromARGB(255, 232, 255, 205)],
+        ); // fresh green → lime mist
+      case 'normal':
+        return const LinearGradient(
+          colors: [
+            Color.fromARGB(255, 178, 178, 178),
+            Color.fromARGB(255, 221, 221, 221),
+          ],
+        ); // gray → white
+      case 'ghost':
+        return const LinearGradient(
+          colors: [Color(0xFFB39DDB), Color.fromARGB(255, 233, 218, 255)],
+        ); // purple → faint lilac
+      default:
+        return const LinearGradient(colors: [Colors.grey, Colors.white]);
     }
   }
 
@@ -87,47 +102,47 @@ class _CreatureVaultScreenState extends State<CreatureVaultScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final pokemonProvider = Provider.of<PokemonProvider>(context);
+    final pokemonList = pokemonProvider.pokemonList;
+    final isLoading = pokemonProvider.isLoading;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child:
-            _isLoading
+            isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 25.0,
+                        horizontal: 16.0,
                         vertical: 10,
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           IconButton(
-                            icon: const Icon(Icons.arrow_back),
+                            icon: const Icon(Icons.arrow_back, size: 30),
                             onPressed: () => Navigator.pop(context),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: 15),
                           Text(
                             "Creature Vault",
-                            style: GoogleFonts.pressStart2p(
-                              fontSize: 19,
-                              color: Colors.black,
-                            ),
+                            style: GoogleFonts.pressStart2p(fontSize: 18),
                           ),
                         ],
                       ),
                     ),
-
                     const SizedBox(height: 10),
 
-                    // 🃏 Pokémon List
+                    // Pokémon List
                     Expanded(
                       child: ListView.builder(
-                        itemCount: _pokemonList.length,
+                        itemCount: pokemonList.length,
                         itemBuilder: (context, index) {
-                          final pokemon = _pokemonList[index];
+                          final pokemon = pokemonList[index];
                           return Padding(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 20,
@@ -136,42 +151,58 @@ class _CreatureVaultScreenState extends State<CreatureVaultScreen> {
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(18),
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Colors.amber.shade100,
-                                    Colors.amber.shade200,
-                                  ],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                ),
+                                gradient: getTypeGradient(pokemon['type']),
                               ),
-                              child: ListTile(
-                                contentPadding: const EdgeInsets.symmetric(
+
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 20,
-                                  vertical: 12,
+                                  vertical: 16,
                                 ),
-                                title: Text(
-                                  pokemon['name'].toString().toUpperCase(),
-                                  style: GoogleFonts.vt323(
-                                    fontSize: 22,
-                                    color: Colors.black,
-                                  ),
+                                height: 110, // You can tweak this
+                                child: Row(
+                                  children: [
+                                    // 👈 Left Side (Name + Type)
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            pokemon['name']
+                                                .toString()
+                                                .toUpperCase(),
+                                            style: GoogleFonts.pressStart2p(
+                                              fontSize: 13,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            '${pokemon['type'].toString()} ${getTypeEmoji(pokemon['type'])}',
+                                            style: GoogleFonts.vt323(
+                                              fontSize: 18,
+                                              color: Colors.black87,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+
+                                    // 👉 Right Side (Image)
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Image.network(
+                                        pokemon['image'],
+                                        height: 100, // Adjust as needed
+                                        width: 100,
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                subtitle: Text(
-                                  '${getTypeEmoji(pokemon['type'])} ${pokemon['type'].toString().toUpperCase()}',
-                                  style: GoogleFonts.vt323(
-                                    fontSize: 18,
-                                    color: Colors.black87,
-                                  ),
-                                ),
-                                trailing: Image.network(
-                                  pokemon['image'],
-                                  height: 60,
-                                  fit: BoxFit.cover,
-                                ),
-                                onTap: () {
-                                  // TODO: Navigate to detail screen
-                                },
                               ),
                             ),
                           );

@@ -6,7 +6,7 @@ final List<Map<String, String>> kantoBadges = [
     "quote": "Hard work is the only path to success.",
     "leader": "Brock",
     "city": "Pewter City",
-    "type": "Rock 🪨",
+    "type": "Rock",
     "funFact": "Brock dreams of becoming a Pokémon breeder.",
   },
   {
@@ -16,7 +16,7 @@ final List<Map<String, String>> kantoBadges = [
     "quote": "Don't be fooled by my appearance.",
     "leader": "Misty",
     "city": "Cerulean City",
-    "type": "Water 💧",
+    "type": "Water",
     "funFact": "Misty co-owns the gym with her three sisters.",
   },
   {
@@ -26,7 +26,7 @@ final List<Map<String, String>> kantoBadges = [
     "quote": "Electricity is my weapon and my shield.",
     "leader": "Lt. Surge",
     "city": "Vermilion City",
-    "type": "Electric ⚡",
+    "type": "Electric",
     "funFact": "Lt. Surge was an army veteran before becoming a Gym Leader.",
   },
   {
@@ -36,7 +36,7 @@ final List<Map<String, String>> kantoBadges = [
     "quote": "Nature is my greatest ally.",
     "leader": "Erika",
     "city": "Celadon City",
-    "type": "Grass 🍃",
+    "type": "Grass",
     "funFact": "Erika is also a well-known perfume maker.",
   },
   {
@@ -46,7 +46,7 @@ final List<Map<String, String>> kantoBadges = [
     "quote": "Poison doesn’t just weaken — it teaches patience.",
     "leader": "Koga",
     "city": "Fuchsia City",
-    "type": "Poison ⚗️",
+    "type": "Poison",
     "funFact": "Koga later joins the Elite Four in the Johto League.",
   },
   {
@@ -56,7 +56,7 @@ final List<Map<String, String>> kantoBadges = [
     "quote": "Power comes from within the mind.",
     "leader": "Sabrina",
     "city": "Saffron City",
-    "type": "Psychic 🔮",
+    "type": "Psychic",
     "funFact": "Sabrina possesses telekinetic powers in the anime.",
   },
   {
@@ -66,7 +66,7 @@ final List<Map<String, String>> kantoBadges = [
     "quote": "My fiery spirit burns hotter than any volcano!",
     "leader": "Blaine",
     "city": "Cinnabar Island",
-    "type": "Fire 🔥",
+    "type": "Fire",
     "funFact": "Blaine once worked as a Pokémon researcher with Mr. Fuji.",
   },
   {
@@ -76,7 +76,7 @@ final List<Map<String, String>> kantoBadges = [
     "quote": "Only the strong deserve to lead.",
     "leader": "Giovanni",
     "city": "Viridian City",
-    "type": "Ground 🌏",
+    "type": "Ground",
     "funFact": "Giovanni is the boss of Team Rocket — a rare dual role.",
   },
 ];

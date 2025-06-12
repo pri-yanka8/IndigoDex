@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:pokedex/providers/pokemon_provider.dart';
 // import 'package:pokedex/auth/authgate.dart';
 import 'package:pokedex/providers/user_provider.dart';
 import 'package:pokedex/screens/badgehall_screen.dart';
@@ -15,7 +16,10 @@ void main() async {
   await Firebase.initializeApp();
   runApp(
     MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => UserProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => PokemonProvider()),
+      ],
       child: const MyApp(),
     ),
   );
