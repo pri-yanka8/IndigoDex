@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
                     'IndigoDex',
                     style: GoogleFonts.pressStart2p(
                       color: Colors.black,
-                      fontSize: 16,
+                      fontSize: 19,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 40),
               _screenCard(
                 context,
-                title: "Pokemons",
+                title: "Creature Vault",
                 bgGradient: LinearGradient(
                   colors: [
                     const Color.fromARGB(255, 255, 233, 35),
@@ -47,11 +47,12 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
                 onTap: () => Navigator.pushNamed(context, '/pokemon-list'),
+                imagePath: "assets/images/splash_screen_pikachu.png",
               ),
               const SizedBox(height: 20),
               _screenCard(
                 context,
-                title: "Gym badges",
+                title: "Badge Hall",
                 bgGradient: LinearGradient(
                   colors: [
                     Color.fromARGB(197, 31, 102, 209), // Deep royal blue
@@ -60,6 +61,7 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
                 onTap: () => Navigator.pushNamed(context, '/gym-badges'),
+                imagePath: "assets/images/sabrina.png",
               ),
             ],
           ),
@@ -73,28 +75,33 @@ class HomeScreen extends StatelessWidget {
     required String title,
     required Gradient bgGradient,
     required VoidCallback onTap,
+    required String imagePath,
   }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
         height: 100,
         decoration: BoxDecoration(
-          // color: Colors.black.withOpacity(0.05),
           gradient: bgGradient,
           borderRadius: BorderRadius.circular(20),
-          // border: Border.all(color: Colors.black, width: 1.5),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.3),
+              blurRadius: 8,
+              offset: Offset(0, 4),
+            ),
+          ],
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                title,
-                style: GoogleFonts.vt323(color: Colors.black, fontSize: 28),
-              ),
-            ],
-          ),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: GoogleFonts.vt323(color: Colors.black, fontSize: 28),
+            ),
+            Image.asset(imagePath, height: 80, width: 80, fit: BoxFit.contain),
+          ],
         ),
       ),
     );
