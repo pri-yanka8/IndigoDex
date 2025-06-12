@@ -22,11 +22,6 @@ class _SetupScreenState extends State<SetupScreen> {
 
   final user = FirebaseAuth.instance.currentUser;
 
-  final Map<String, List<String>> starterPool = {
-    'Fire': ['Cyndaquil', 'Slugma', 'Houndour'],
-    'Water': ['Totodile', 'Wooper', 'Remoraid'],
-    'Grass': ['Chikorita', 'Hoppip', 'Bellsprout'],
-  };
 
   void handleContinue() {
     final username = context.read<UserProvider>().username;
@@ -58,7 +53,6 @@ class _SetupScreenState extends State<SetupScreen> {
               )
               : Container(color: Colors.white),
 
-          // ⬆️ Foreground content
           SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.only(
@@ -169,7 +163,6 @@ class _SetupScreenState extends State<SetupScreen> {
   Widget _buildTypeCard(String type, String imgPath) {
     final isSelected = _selectedType == type;
 
-    // ✨ Set glow color based on type
     final glowColor = switch (type) {
       "Fire" => Colors.redAccent,
       "Water" => Colors.blueAccent,

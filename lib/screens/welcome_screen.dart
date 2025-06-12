@@ -44,11 +44,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     setState(() => _isloading = false);
 
     if (querySnapshot.docs.isNotEmpty) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const HomeScreen()),
-      );
-    } else {
+  final userData = querySnapshot.docs.first.data();
+  final starterImageUrl = userData['pokemonImage'];
+
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (_) => HomeScreen(starterImageUrl: starterImageUrl),
+    ),
+  );
+}
+ else {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const SetupScreen()),
@@ -75,7 +81,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
               child: Column(
                 children: [
-                  // ⬇️ your original UI
+                  
                   ClipPath(
                     clipper: CurvedBottomClipper(),
                     child: Image.asset(
@@ -87,7 +93,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   ),
                   const SizedBox(height: 30),
                   Text(
-                    'JhotoDex',
+                    'IndigoDex',
                     style: GoogleFonts.pressStart2p(
                       fontSize: 20,
                       color: Colors.black,
@@ -135,12 +141,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
           ),
 
-          // 🔥 LOADER OVERLAY
           if (_isloading)
             Container(
-              color: Colors.black.withOpacity(0.5), // dim background
+              color: Colors.black.withOpacity(0.5), 
               child: const Center(
-                child: PokeballLoader(), // your spinning widget
+                child: PokeballLoader(), 
               ),
             ),
         ],

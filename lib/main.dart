@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:pokedex/auth/authgate.dart';
+// import 'package:pokedex/auth/authgate.dart';
 import 'package:pokedex/providers/user_provider.dart';
 import 'package:pokedex/screens/home_screen.dart';
 import 'package:pokedex/screens/splash_screen.dart';
@@ -29,10 +29,15 @@ class MyApp extends StatelessWidget {
       routes: {
         // '/': (context) => const SplashScreen(),
         '/welcome': (context) => const WelcomeScreen(),
-        '/home': (context) => const HomeScreen(),
+        '/home': (context) {
+          final args =
+              ModalRoute.of(context)!.settings.arguments
+                  as Map<String, dynamic>;
+          return HomeScreen(starterImageUrl: args['starterImageUrl']);
+        },
       },
       debugShowCheckedModeBanner: false,
-      title: 'Johto Pokédex',
+      title: 'indigo Pokédex',
       home: const SplashScreen(),
     );
   }
