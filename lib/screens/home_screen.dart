@@ -98,7 +98,10 @@ class HomeScreen extends StatelessWidget {
           children: [
             Text(
               title,
-              style: GoogleFonts.vt323(color: Colors.black, fontSize: 28),
+              style: GoogleFonts.vt323(
+                color: const Color.fromARGB(255, 66, 41, 33),
+                fontSize: 28,
+              ),
             ),
             Image.asset(imagePath, height: 80, width: 80, fit: BoxFit.contain),
           ],

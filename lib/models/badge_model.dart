@@ -1,0 +1,82 @@
+final List<Map<String, String>> kantoBadges = [
+  {
+    "badgeImage": "assets/badges/boulder_badge.png",
+    "leaderImage": "assets/leaders/brock.png",
+    "badgeName": "Boulder Badge",
+    "quote": "Hard work is the only path to success.",
+    "leader": "Brock",
+    "city": "Pewter City",
+    "type": "Rock",
+    "funFact": "Brock dreams of becoming a Pokémon breeder."
+  },
+  {
+    "badgeImage": "assets/badges/cascade_badge.png",
+    "leaderImage": "assets/leaders/misty.png",
+    "badgeName": "Cascade Badge",
+    "quote": "Don't be fooled by my appearance.",
+    "leader": "Misty",
+    "city": "Cerulean City",
+    "type": "Water",
+    "funFact": "Misty co-owns the gym with her three sisters."
+  },
+  {
+    "badgeImage": "assets/badges/thunder_badge.png",
+    "leaderImage": "assets/leaders/surge.png",
+    "badgeName": "Thunder Badge",
+    "quote": "Electricity is my weapon and my shield.",
+    "leader": "Lt. Surge",
+    "city": "Vermilion City",
+    "type": "Electric",
+    "funFact": "Lt. Surge was an army veteran before becoming a Gym Leader."
+  },
+  {
+    "badgeImage": "assets/badges/rainbow_badge.png",
+    "leaderImage": "assets/leaders/erika.png",
+    "badgeName": "Rainbow Badge",
+    "quote": "Nature is my greatest ally.",
+    "leader": "Erika",
+    "city": "Celadon City",
+    "type": "Grass",
+    "funFact": "Erika is also a well-known perfume maker."
+  },
+  {
+    "badgeImage": "assets/badges/soul_badge.png",
+    "leaderImage": "assets/leaders/koga.png",
+    "badgeName": "Soul Badge",
+    "quote": "Poison doesn’t just weaken — it teaches patience.",
+    "leader": "Koga",
+    "city": "Fuchsia City",
+    "type": "Poison",
+    "funFact": "Koga later joins the Elite Four in the Johto League."
+  },
+  {
+    "badgeImage": "assets/badges/marsh_badge.png",
+    "leaderImage": "assets/images/sabrina.png",
+    "badgeName": "Marsh Badge",
+    "quote": "Power comes from within the mind.",
+    "leader": "Sabrina",
+    "city": "Saffron City",
+    "type": "Psychic",
+    "funFact": "Sabrina possesses telekinetic powers in the anime."
+  },
+  {
+    "badgeImage": "assets/badges/volcano_badge.png",
+    "leaderImage": "assets/leaders/blaine.png",
+    "badgeName": "Volcano Badge",
+    "quote": "My fiery spirit burns hotter than any volcano!",
+    "leader": "Blaine",
+    "city": "Cinnabar Island",
+    "type": "Fire",
+    "funFact": "Blaine once worked as a Pokémon researcher with Mr. Fuji."
+  },
+  {
+    "badgeImage": "assets/badges/earth_badge.png",
+    "leaderImage": "assets/leaders/giovanni.png",
+    "badgeName": "Earth Badge",
+    "quote": "Only the strong deserve to lead.",
+    "leader": "Giovanni",
+    "city": "Viridian City",
+    "type": "Ground",
+    "funFact": "Giovanni is the boss of Team Rocket — a rare dual role."
+  },
+];
