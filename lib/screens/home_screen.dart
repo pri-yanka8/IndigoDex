@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 40),
-              _screenCard(
+              screenCard(
                 context,
                 title: "Creature Vault",
                 bgGradient: LinearGradient(
@@ -50,13 +50,13 @@ class HomeScreen extends StatelessWidget {
                 imagePath: "assets/images/splash_screen_pikachu.png",
               ),
               const SizedBox(height: 20),
-              _screenCard(
+              screenCard(
                 context,
                 title: "Badge Hall",
                 bgGradient: LinearGradient(
                   colors: [
-                    Color.fromARGB(197, 31, 102, 209), // Deep royal blue
-                    Color.fromARGB(255, 86, 165, 244), // Mid sky blue
+                    Color.fromARGB(197, 31, 102, 209), 
+                    Color.fromARGB(255, 86, 165, 244), 
                     Color(0xFF64B5F6),
                   ],
                 ),
@@ -70,7 +70,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _screenCard(
+  Widget screenCard(
     BuildContext context, {
     required String title,
     required Gradient bgGradient,

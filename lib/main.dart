@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 // import 'package:pokedex/auth/authgate.dart';
 import 'package:pokedex/providers/user_provider.dart';
+import 'package:pokedex/screens/badgehall_screen.dart';
+import 'package:pokedex/screens/creaturevault_screen.dart';
 import 'package:pokedex/screens/home_screen.dart';
 import 'package:pokedex/screens/splash_screen.dart';
 import 'package:pokedex/screens/welcome_screen.dart';
@@ -35,6 +37,8 @@ class MyApp extends StatelessWidget {
                   as Map<String, dynamic>;
           return HomeScreen(starterImageUrl: args['starterImageUrl']);
         },
+        '/gym-badges': (context) => const BadgeHallScreen(),
+        '/pokemon-list': (context) => const CreatureVaultScreen(),
       },
       debugShowCheckedModeBanner: false,
       title: 'indigo Pokédex',
