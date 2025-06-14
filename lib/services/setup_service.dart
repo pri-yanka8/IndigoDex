@@ -13,6 +13,15 @@ class SetupService {
     'Water': ['Squirtle', 'Psyduck', 'Poliwag'],
     'Grass': ['Bulbasaur', 'Oddish', 'Bellsprout'],
   };
+  static Future<bool> isUsernameTaken(String username) async {
+  final snapshot = await FirebaseFirestore.instance
+      .collection('users')
+      .where('username', isEqualTo: username.trim())
+      .limit(1)
+      .get();
+
+  return snapshot.docs.isNotEmpty;
+}
 
   static Future<void> handleContinueLogic({
     required BuildContext context,

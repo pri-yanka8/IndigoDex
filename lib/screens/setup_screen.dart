@@ -1,10 +1,8 @@
-// import 'dart:math';
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pokedex/providers/user_provider.dart';
-// import 'package:pokedex/screens/home_screen.dart';
+
 import 'package:pokedex/services/setup_service.dart';
 import 'package:provider/provider.dart';
 
@@ -19,9 +17,11 @@ class _SetupScreenState extends State<SetupScreen> {
   // final _usernameController = TextEditingController();
   String? _selectedType;
   String? _backgroundImage;
+  bool _isUsernameValid = false;
+  bool _isCheckingUsername = false;
+  String _usernameError = '';
 
   final user = FirebaseAuth.instance.currentUser;
-
 
   void handleContinue() {
     final username = context.read<UserProvider>().username;
@@ -82,10 +82,46 @@ class _SetupScreenState extends State<SetupScreen> {
                   const SizedBox(height: 44),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
+
                     child: Consumer<UserProvider>(
                       builder:
                           (_, userProvider, __) => TextField(
-                            onChanged: (val) => userProvider.setUsername(val),
+                            onChanged: (val) async {
+                              final username = val.trim();
+
+                              setState(() {
+                                _isUsernameValid = false;
+                                _isCheckingUsername = true;
+                                _usernameError = '';
+                              });
+
+                              if (username.length < 8) {
+                                setState(() {
+                                  _usernameError =
+                                      'Username must be at least 8 characters';
+                                  _isCheckingUsername = false;
+                                });
+                                return;
+                              }
+
+                              final taken = await SetupService.isUsernameTaken(
+                                username,
+                              );
+
+                              setState(() {
+                                _isCheckingUsername = false;
+                                if (taken) {
+                                  _usernameError = 'Username is already taken';
+                                } else {
+                                  _isUsernameValid = true;
+                                }
+                              });
+
+                              context.read<UserProvider>().setUsername(
+                                username,
+                              );
+                            },
+
                             style: GoogleFonts.vt323(fontSize: 20),
                             decoration: InputDecoration(
                               hintText: 'What should we call you?',
@@ -110,6 +146,15 @@ class _SetupScreenState extends State<SetupScreen> {
                           ),
                     ),
                   ),
+                  if (_usernameError.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Text(
+                        _usernameError,
+                        style: const TextStyle(color: Color.fromARGB(255, 255, 17, 0)),
+                      ),
+                    ),
+
                   const SizedBox(height: 35),
                   Text(
                     'Choose your starter type',
@@ -135,7 +180,10 @@ class _SetupScreenState extends State<SetupScreen> {
                   ),
                   const SizedBox(height: 35),
                   ElevatedButton(
-                    onPressed: handleContinue,
+                    onPressed:
+                        (_isUsernameValid && _selectedType != null)
+                            ? handleContinue
+                            : null,
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 40,
@@ -144,7 +192,7 @@ class _SetupScreenState extends State<SetupScreen> {
                       backgroundColor: Colors.black,
                     ),
                     child: Text(
-                      "Let's goooooo!",
+                      "continue",
                       style: GoogleFonts.vt323(
                         fontSize: 20,
                         color: Colors.white,

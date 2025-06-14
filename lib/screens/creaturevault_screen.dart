@@ -48,11 +48,11 @@ class _CreatureVaultScreenState extends State<CreatureVaultScreen> {
       case 'ice':
         return const LinearGradient(
           colors: [Color(0xFFB3E5FC), Color.fromARGB(255, 205, 249, 255)],
-        ); // icy blue → frosty white
+        ); 
       case 'bug':
         return const LinearGradient(
           colors: [Color(0xFFC5E1A5), Color.fromARGB(255, 232, 255, 205)],
-        ); // fresh green → lime mist
+        ); 
       case 'normal':
         return const LinearGradient(
           colors: [
@@ -63,7 +63,7 @@ class _CreatureVaultScreenState extends State<CreatureVaultScreen> {
       case 'ghost':
         return const LinearGradient(
           colors: [Color(0xFFB39DDB), Color.fromARGB(255, 233, 218, 255)],
-        ); // purple → faint lilac
+        ); 
       default:
         return const LinearGradient(colors: [Colors.grey, Colors.white]);
     }
@@ -93,6 +93,8 @@ class _CreatureVaultScreenState extends State<CreatureVaultScreen> {
         return '👻';
       case 'bug':
         return '🐛';
+      case 'dragon':
+        return '🐲';
       case 'normal':
         return '⭐';
       default:
@@ -159,10 +161,9 @@ class _CreatureVaultScreenState extends State<CreatureVaultScreen> {
                                   horizontal: 20,
                                   vertical: 16,
                                 ),
-                                height: 110, // You can tweak this
+                                height: 110,
                                 child: Row(
                                   children: [
-                                    // 👈 Left Side (Name + Type)
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:

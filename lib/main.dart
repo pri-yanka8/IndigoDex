@@ -37,9 +37,11 @@ class MyApp extends StatelessWidget {
         '/welcome': (context) => const WelcomeScreen(),
         '/home': (context) {
           final args =
-              ModalRoute.of(context)!.settings.arguments
-                  as Map<String, dynamic>;
-          return HomeScreen(starterImageUrl: args['starterImageUrl']);
+              ModalRoute.of(context)?.settings.arguments
+                  as Map<String, dynamic>?;
+          return HomeScreen(
+            starterImageUrl: args?['starterImageUrl'] ?? '',
+          );
         },
         '/gym-badges': (context) => const BadgeHallScreen(),
         '/pokemon-list': (context) => const CreatureVaultScreen(),
